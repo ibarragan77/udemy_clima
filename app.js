@@ -11,10 +11,18 @@ const argv = require('yargs').options({
 const lugar = require('./lugar/lugar');
 const clima = require('./clima/clima');
 
+const addressLatLng = require('./maps/map');
+
+
+let addressLatLngResult = addressLatLng.getLugarLatLng(argv.direccion)
+    .then( resp=>  console.log(JSON.stringify(resp, undefined, 2))     )
+    .catch( e => console.log(' Error ', e));
+
 
 let getInfo = async(direccion)=> {
     try {
-        let coors = await lugar.getLugarLatLng(direccion);
+        // let coors = await lugar.getLugarLatLng(direccion);
+        let coors = await addressLatLng.getLugarLatLng(direccion);
         let temp = await clima.getClima(coors.lat, coors.lng);
 
         return `El clima en ${coors.direccion} es de ${temp}`;
